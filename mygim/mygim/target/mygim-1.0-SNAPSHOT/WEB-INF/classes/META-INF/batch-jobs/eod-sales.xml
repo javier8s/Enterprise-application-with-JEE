@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<job id="endOfDaySales"
+    xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    version="1.0">
+    <step id="populateSales" >
+        <chunk item-count="1" skip-limit="5">
+            <reader ref="salesReader"/>
+            <processor ref="salesProcessor"/>
+            <writer ref="salesWriter"/>
+            <skippable-exception-classes>
+                <include class="java.lang.NumberFormatException"/>
+            </skippable-exception-classes>
+        </chunk>
+    </step>
+</job>

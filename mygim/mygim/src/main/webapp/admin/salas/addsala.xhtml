@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../../WEB-INF/template.xhtml">
+
+            <ui:define name="content">
+                <h:form>
+                    <f:event listener="#{salaClientBean.checkNombresala}" type="postValidate" />
+                    <p:panel header="Panel de creación de una nueva sala">
+                        <h:panelGrid id="grid" columns="3">
+                            <h:outputLabel for="nombresala" value="Nombre de la nueva sala:" style="font-weight:bold"/>
+                            <p:inputText id="nombresala" value="#{salaBackingBean.nombresala}" required="true"
+                                         requiredMessage="Por favor, introduce un nombre de sala." maxlength="30">
+                                <f:validateRegex pattern="[A-Za-z]*"/>
+                            </p:inputText>
+
+                            <p:message for="nombresala"/>
+                            <h:outputLabel for="puestos" value="Puestos de la nueva sala:" style="font-weight:bold"/>
+                            <p:inputText id="puestos" value="#{salaBackingBean.puestos}" required="true" type ="number"
+                                         requiredMessage="Por favor, introduce el número de puestos.">
+                                <f:validateLongRange minimum="1"/>
+                            </p:inputText>
+                            <p:message for="puestos"/>
+
+                        </h:panelGrid>
+                        <p:commandButton action="#{salaClientBean.addSala}" update="grid" value="Crear una nueva sala" icon="uiicon-pencil"/>
+                        <p:commandButton action="salas" update="grid" value="Volver al menú de salas" icon="uiicon-pencil" immediate="true"/>
+                    </p:panel>
+                </h:form>
+            </ui:define>
+
+
+        </ui:composition>
+
+    </body>
+</html>

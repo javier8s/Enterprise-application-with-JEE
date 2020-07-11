@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../WEB-INF/template.xhtml">
+
+            <ui:define name="content">
+                <h:form id="form">
+                    <p:growl id="msgs" showDetail="true"/>
+                    <p:messages id="messages" showDetail="true" closable="true">
+                        <p:autoUpdate />
+                    </p:messages>
+                    <p:dataTable 
+                        id="tableStateDT" var="user" value="#{editProfileBean.usuariosList}" widgetVar="profTable"
+                        filteredValue="#{editProfileBean.usuariosList}"
+                        selection="#{editProfileBean.selectedUsuario}" rowKey="#{user.email}"
+                        editable="true" editMode="cell"  >
+                        <p:ajax event="cellEdit" listener="#{editProfileBean.onCellEdit}" update=":form:messages" />
+                        
+                        <f:facet name="header">
+                            Perfil de usuario
+                        </f:facet>
+                        <p:column headerText="Email" >
+                          <h:outputText style="display:block; text-align:center" value="#{user.email}" />
+                        </p:column>
+                        <p:column headerText="Contraseña" >
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText  style="display:block; text-align:center" value="***********" /></f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="modelInput2" value="#{user.password}" style="width:100%">
+                                            <f:validateRegex pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})" />
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        
+                        <p:column headerText="Nombre" >
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText style="display:block; text-align:center" value="#{user.nombre}" /></f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="modelInput3" value="#{user.nombre}" style="width:100%">
+                                        <f:validateRegex pattern="[A-Za-z]*"/>
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="DNI">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText style="display:block; text-align:center" value="#{user.dni}" /></f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="modelInput4" value="#{user.dni}" style="width:100%"  >  
+                                        <f:validator validatorId="dniValidator" />
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Primer apellido" >
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText style="display:block; text-align:center" value="#{user.apellido1}" /></f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="modelInput5" value="#{user.apellido1}" style="width:100%" > 
+                                        <f:validateRegex pattern="[A-Za-z]*"/>
+                                    </p:inputText>
+
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Segundo apellido" >
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText style="display:block; text-align:center" value="#{user.apellido2}" /></f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="modelInput6" value="#{user.apellido2}" style="width:100%">  
+                                        <f:validateRegex pattern="[A-Za-z]*"/>
+                                    </p:inputText>
+
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Fecha de nacimiento" >
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText style="display:block; text-align:center" value="#{user.nacimiento}"></h:outputText >
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:calendar  value="#{user.nacimiento}" id="time1" effect="fadeIn" pattern="dd-MM-yyyy">
+                                        <f:converter converterId="dateConverter" for="time1" />
+                                    </p:calendar>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Telefono" >
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText style="display:block; text-align:center" value="#{user.telefono}" /></f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="modelInput7" value="#{user.telefono}" style="width:100%">  
+                                        <f:validator validatorId="phoneValidator" />
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                    </p:dataTable>
+                     <p:commandButton value="Borrar cuenta" action="#{editProfileBean.adios}" update=":form:tableStateDT"/>
+
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

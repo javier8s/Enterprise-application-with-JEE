@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../WEB-INF/template.xhtml">
+
+            <ui:define name="content">
+                <h:form id="form">
+                    <h:messages globalOnly="true" />
+                    <p:growl id="msgs" showDetail="true"/>
+                    <p:messages id="messages" showDetail="true" closable="true">
+                        <p:autoUpdate />
+                    </p:messages>
+                    <p:dataTable 
+
+                        id="tableStateDT" var="ent" value="#{entrenadorAdminBean.usuariosList}" widgetVar="entTable"
+                        emptyMessage="Ningún entrenador fue encontrado" filteredValue="#{entrenadorAdminBean.filteredUsuarios}"
+                        selection="#{entrenadorAdminBean.selectedUsuario}" rowKey="#{ent.email}"
+                        selectionMode="single" 
+                        editable="true" editMode="cell"  
+                        rows="10" paginator="true" 
+                        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        rowsPerPageTemplate="5,10,15">
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <p:outputPanel style="display:block; text-align:center">
+                                    Tabla de entrenadores
+                                </p:outputPanel>
+                            </p:outputPanel>
+                        </f:facet>
+                         <p:ajax event="cellEdit" listener="#{entrenadorAdminBean.onCellEdit}" update=":form:messages" />
+                        <p:column headerText="Email " filterBy="#{ent.email}" sortBy="#{ent.email}" filterMatchMode="contains"><h:outputText value="#{ent.email}" /></p:column>
+                        <p:column headerText="Nombre" filterBy="#{ent.nombre}" sortBy="#{ent.nombre}" filterMatchMode="startsWith"  >
+                            <p:cellEditor >
+                                <f:facet name="output"><h:outputText value="#{ent.nombre}" /></f:facet>
+                                <f:facet name="input" >
+                                    <p:inputText id="modelInput1" value="#{ent.nombre}" style="width:100%" >
+                                        <f:validator validatorId="len50Validator" />
+                                        <f:validateRegex pattern="[A-Za-z]*"/>
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="DNI" filterBy="#{ent.dni}" sortBy="#{ent.dni}" filterMatchMode="startsWith">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText style="display:block; text-align:center"  value="#{ent.dni}" /></f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="modelInput2" value="#{ent.dni}" style="width:100%"  >  
+                                        <f:validator validatorId="dniValidator" />
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Primer apellido" filterBy="#{ent.apellido1}" sortBy="#{ent.apellido1}" filterMatchMode="startsWith">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{ent.apellido1}" /></f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="modelInput3" value="#{ent.apellido1}" style="width:100%" >  
+                                        <f:validator validatorId="len50Validator" />
+                                        <f:validateRegex pattern="[A-Za-z]*"/>
+                                    </p:inputText>
+
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Segundo apellido" filterBy="#{ent.apellido2}" sortBy="#{ent.apellido1}" filterMatchMode="startsWith">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{ent.apellido2}" /></f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="modelInput4" value="#{ent.apellido2}" style="width:100%">  
+                                        <f:validator validatorId="len50Validator" />
+                                        <f:validateRegex pattern="[A-Za-z]*"/>
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Fecha de nacimiento" filterBy="#{ent.nacimiento}" sortBy="#{ent.nacimiento}" filterMatchMode="startsWith">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText  style="display:block; text-align:center"   value="#{ent.nacimiento}"></h:outputText >
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:calendar  value="#{ent.nacimiento}" id="time1" effect="fadeIn" pattern="dd-MM-yyyy">
+                                        <f:converter converterId="dateConverter" for="time1" />
+                                    </p:calendar>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Telefono" filterBy="#{ent.telefono}" sortBy="#{ent.telefono}" filterMatchMode="startsWith">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText  style="display:block; text-align:center"   value="#{ent.telefono}" /></f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="modelInput6" value="#{ent.telefono}" style="width:100%">  
+                                        <f:validator validatorId="phoneValidator" />
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:inputText id="globalFilter" onkeyup="PF('entTable').filter()" style="width:150px" placeholder="Buscar">   
+                            </p:inputText>
+                            <p:inputText id="email" value="#{entrenadorAdminBean.nuevoEmail}" placeholder="Nuevo entrenador">
+                            </p:inputText>
+                        </f:facet>
+                    </p:dataTable>
+
+
+                    <p:outputPanel style="display:block; text-align:center">
+                        <p:commandButton id="l1" value="Borrar Entrenador" action="#{entrenadorAdminBean.deleteSelected()}" update=":form:tableStateDT" immediate="true" />
+                        <p:commandButton id="l2" value="Nuevo Entrenador" action="#{entrenadorAdminBean.addSelected()}" update=":form:tableStateDT"/>
+                    </p:outputPanel>
+                    <p:blockUI block="form" trigger="l1,l2">
+                        <p:graphicImage value="/images/load.gif"/>
+                    </p:blockUI>
+
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

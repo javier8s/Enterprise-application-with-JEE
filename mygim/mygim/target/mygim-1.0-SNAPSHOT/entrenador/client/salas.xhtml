@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../../WEB-INF/template.xhtml">
+
+            <ui:define name="content">
+                <h:form>
+                    <p:dataTable 
+
+                        id="tableStateDT" var="sala" value="#{salaClientBean.salasList}" widgetVar="salasTable"
+                        emptyMessage="Ninguna sala fue encontrada" filteredValue="#{salaClientBean.filteredSalas}"
+                        selection="#{salaClientBean.selectedSalas}" rowKey="#{sala.nombresala}"
+                        rows="10" paginator="true"
+                        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        rowsPerPageTemplate="5,10,15">
+                        <f:facet name="header">
+
+                            <f:facet name="header"><p:outputPanel style="display:block; text-align:center">Tabla salas</p:outputPanel></f:facet>
+
+
+                        </f:facet>
+
+                        <p:column headerText="Nombre sala" filterBy="#{sala.nombresala}" sortBy="#{sala.nombresala}"  filterMatchMode="contains">
+                            <h:outputText value="#{sala.nombresala}" />
+                        </p:column>
+
+                        <p:column headerText="Puestos" filterBy="#{sala.puestos}" sortBy="#{sala.puestos}" filterMatchMode="startsWith">
+                            <h:outputText value="#{sala.puestos}" />
+                        </p:column>
+                    </p:dataTable>
+
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

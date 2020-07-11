@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+
+        <link href="${facesContext.externalContext.requestContextPath}/resources/css/default.css"
+              rel="stylesheet" type="text/css" />
+        <link href="${facesContext.externalContext.requestContextPath}/resources/css/cssLayout.css"
+              rel="stylesheet" type="text/css" />
+        <title>Facelets Template</title>
+
+        <style type="text/css">
+            .ui-datatable .ui-datatable-header {
+                text-align: right !important;
+            }
+
+            .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox {
+                display: none;
+            }
+
+            .ui-analog-clock {
+                width: 200px;
+            }
+            .centered {
+                text-align: center;
+
+                margin-left: 50%;
+            }
+        </style>  
+        <script type="text/javascript">
+            function handleLoginRequest(xhr, status, args) {
+                if (args.validationFailed || !args.loggedIn) {
+                    PF('dlg').jq.effect("shake", {times: 5}, 100);
+                } else {
+                    PF('dlg').hide();
+                    $('#loginLink').fadeOut();
+                }
+            }
+        </script>
+
+    </h:head>
+
+    <h:body>
+        <p:layout fullPage="true">
+            <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true" >
+
+
+
+                <h2><h:outputText value="Aplicación Empresarial Mygim- Segovia"/></h2>
+                <h:form>
+                    <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+                    <p:toolbar rendered="#{!loginView.loged()}">
+                        <f:facet name="left" >
+                            <p:menuButton icon="fa fa-user">
+                                <p:menuitem value="Perfil" onclick="PF('dlg').show();" icon="fa fa-user" title="Editar perfil" />
+                            </p:menuButton>
+                            <span class="ui-separator">
+                                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                            </span>
+                        </f:facet>
+                        <f:facet name="right">
+                            <p:menuButton value="#{loginView.authenticatedUser.nombre}">
+                                <p:menuitem value="Cerrar sesión" action="#{loginView.logout}" icon="ui-icon-power" immediate="true"/>
+                            </p:menuButton>
+                        </f:facet>
+                    </p:toolbar>
+                    <p:dialog header="Login" widgetVar="dlg" resizable="false" position="top" height="50px">
+                        <h:panelGrid columns="3" cellpadding="5">
+
+                            <h:outputLabel for="password" value="Password:" />
+                            <p:password id="password" value="#{loginView.pass}" required="true" label="password" />
+
+
+                            <p:commandButton value="Login" action="#{loginView.editProfile()}" style="float:right"/>
+
+                        </h:panelGrid>
+                    </p:dialog> 
+                </h:form>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="200" header="Menú" collapsible="true">
+                <h:form>
+                    <p:menu>
+                        <p:menuitem value="Inicio" outcome="/index.xhtml" icon="fa fa-fw fa-home" />
+                        <p:menuitem value="Iniciar Sesión" outcome="/login.xhtml"  rendered="#{loginView.loged()}" icon="fa fa-fw fa-paw"/>
+                        <p:menuitem value="Registro" outcome="/registro.xhtml"  rendered="#{loginView.loged()}" icon="fa fa-fw fa-user-plus"/>
+
+                        <p:submenu label ="Usuario" rendered="#{request.isUserInRole('cliente')}">
+                            <p:menuitem value="Actividades" outcome="/cliente/client/actividades.xhtml" icon="fa fa-fw fa-child"/>
+                            <p:menuitem value="Apuntarse" outcome="/cliente/apuntar/booking.xhtml" icon="fa fa-fw fa-hand-o-right"/>
+                            <p:menuitem value="Chat" outcome="/chat/chatroom.xhtml" icon="fa fa-fw fa-whatsapp"/>
+                            <p:menuitem value="Charts clientes" outcome="/charts/chartClientes.xhtml" icon="fa fa-fw fa-bar-chart-o"/>
+                        </p:submenu>
+
+                        <p:submenu label ="Administrador" rendered="#{request.isUserInRole('admin')}">
+                            <p:menuitem value="Ver entrenadores" outcome="/admin/entrenador/entrenadores.xhtml" icon="fa fa-fw fa-user-md"/>
+                            <p:menuitem value="Ver salas" outcome="/admin/salas/salas.xhtml" icon="fa fa-fw fa-cubes"/>
+                            <p:menuitem value="Ver ventas" outcome="/admin/ventas/ventas.xhtml" icon="fa fa-fw fa-money"/>
+                            <p:menuitem value="Ver usuarios" outcome="/admin/verusuarios.xhtml" icon="fa fa-fw fa-group"/>
+                        </p:submenu>
+
+                        <p:submenu label ="Entrenador" rendered="#{request.isUserInRole('entrenador')}">
+                            <p:menuitem value="Ver actividades" outcome="/entrenador/client/actividades.xhtml" icon="fa fa-fw fa-child"/>
+                            <p:menuitem value="Ver salas" outcome="/entrenador/client/salas.xhtml" icon="fa fa-fw fa-newspaper-o"/>
+
+                            <p:menuitem value="Chat" outcome="/chat/chatroom.xhtml" icon="fa fa-fw fa-whatsapp"/>
+                            <p:menuitem value="Charts" outcome="/charts/chart.xhtml" icon="fa fa-fw fa-area-chart"/>
+                            <p:menuitem value="Charts clientes" outcome="/charts/chartClientes.xhtml" icon="fa fa-fw fa-bar-chart-o"/>
+
+                        </p:submenu>
+                    </p:menu>
+
+
+                </h:form>
+            </p:layoutUnit> 
+            <p:layoutUnit position="center">
+                <ui:insert name="content">Content</ui:insert>
+            </p:layoutUnit> 
+
+        </p:layout>
+    </h:body>
+
+</html>

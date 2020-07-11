@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../../WEB-INF/template.xhtml">
+
+            <ui:define name="content">
+                <h:form id="form">
+                    <p:messages id="messages" showDetail="true" closable="true">
+                        <p:autoUpdate />
+                    </p:messages>
+                    <p:growl id="msgs" showDetail="true"/>
+
+                    <p:dataTable 
+                        id="tableStateDT" var="actividad" value="#{actividadBookBean.actividadesList}" widgetVar="actividadesTable"
+                        emptyMessage="Ninguna actividad fue encontrada" filteredValue="#{actividadBookBean.filteredActividades}"
+                        selectionMode ="single"
+                        selection="#{actividadBookBean.selectedActividad}" rowKey="#{actividad.idactividad}" rows="10" paginator="true" 
+                        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15">
+                       <f:facet name="header"><p:outputPanel style="display:block; text-align:center">Tabla de actividades sin apuntar</p:outputPanel></f:facet>
+                        <p:ajax event="rowSelect" listener="#{actividadBookBean.onRowSelect}" update=":form:msgs" />
+                        <p:ajax event="rowUnselect" listener="#{actividadBookBean.onRowUnselect}" update=":form:msgs" />
+                        <p:column headerText="ID" filterBy="#{actividad.idactividad}" sortBy="#{actividad.idactividad}" filterMatchMode="contains"><h:outputText  style="display:block; text-align:center"  value="#{actividad.idactividad}" /></p:column>
+                        <p:column headerText="Nombre de la actividad" filterBy="#{actividad.nombre}" sortBy="#{actividad.descripcion}" filterMatchMode="startsWith"><h:outputText  style="display:block; text-align:center"  value="#{actividad.nombre}" /></p:column>
+                        <p:column headerText="Nombre sala - actividad" filterBy="#{actividad.nombresala}" sortBy="#{actividad.nombresala}" filterMatchMode="startsWith"><h:outputText  style="display:block; text-align:center"  value="#{actividad.nombresala}" /></p:column>
+                        <p:column headerText="Fecha" filterBy="#{actividad.dia}" sortBy="#{actividad.dia}" filterMatchMode="startsWith"><h:outputText  style="display:block; text-align:center"  value="#{actividad.dia}"/></p:column>
+                        <p:column headerText="Hora comienzo" filterBy="#{actividad.horacomienzo}" sortBy="#{actividad.horacomienzo}" filterMatchMode="startsWith"><h:outputText  style="display:block; text-align:center"  value="#{actividad.horacomienzo}"/></p:column>
+                        <p:column headerText="Hora fin" filterBy="#{actividad.horafin}" sortBy="#{actividad.horafin}" filterMatchMode="startsWith"><h:outputText  style="display:block; text-align:center"  value="#{actividad.horafin}"/></p:column>
+                        <p:column headerText="Descripción actividad" filterBy="#{actividad.descripcion}" sortBy="#{actividad.descripcion}" filterMatchMode="startsWith"><h:outputText  style="display:block; text-align:center"  value="#{actividad.descripcion}" /></p:column>
+                        <p:column headerText="Precio"  filterBy="#{actividad.precio}" sortBy="#{actividad.precio}" filterMatchMode="startsWith"><h:outputText  style="display:block; text-align:center"  value="#{actividad.precio}" /></p:column>
+                        <p:column headerText="vacantes" filterBy="#{actividad.vacantes}" sortBy="#{actividad.vacantes}" filterMatchMode="startsWith"><h:outputText  style="display:block; text-align:center"  value="#{actividad.vacantes}" /></p:column>
+
+                        <f:facet name="footer"><p:inputText id="globalFilter" onkeyup="PF('actividadesTable').filter()" style="width:150px" placeholder="Buscar"/></f:facet>
+
+                    </p:dataTable>
+                    <p:outputPanel style="display:block; text-align:center">
+
+                        <p:commandButton action="#{actividadBookBean.createSell()}"  value="Apuntarse" icon="uiicon-pencil"/>
+
+                    </p:outputPanel>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

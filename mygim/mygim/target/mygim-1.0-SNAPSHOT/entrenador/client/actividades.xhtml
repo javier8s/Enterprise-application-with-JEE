@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../../WEB-INF/template.xhtml">
+
+            <ui:define name="content">
+                <h:form id="form">
+                    <p:growl id="msgs" showDetail="true"/>
+                    <p:messages id="messages" showDetail="true" closable="true">
+                        <p:autoUpdate />
+                    </p:messages>
+                    <p:dataTable
+                        id="tableStateDT" var="actividad" value="#{actividadClientBean.actividadesList}" widgetVar="actividadesTable"
+                        emptyMessage="Ninguna actividad fue encontrada" filteredValue="#{actividadClientBean.filteredActividades}"
+                        selectionMode="single" 
+                        selection="#{actividadClientBean.selectedActividad}" rowKey="#{actividad.idactividad}"
+                        editable="true" editMode="cell"  
+                        rows="10" paginator="true" 
+                        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        rowsPerPageTemplate="5,10,15">
+                       
+                        <p:ajax event="cellEdit" listener="#{actividadClientBean.onCellEdit}" update=":form:messages" />
+                        <f:facet name="header">
+                            <p:outputPanel style="display:block; text-align:center">
+                                Tabla de actividades
+                            </p:outputPanel>
+                        </f:facet>
+
+                        <p:column headerText="ID" filterBy="#{actividad.idactividad}" sortBy="#{actividad.idactividad}" filterMatchMode="contains">
+                            <h:outputText  style="display:block; text-align:center"  value="#{actividad.idactividad}" />
+                        </p:column>
+
+
+                        <p:column headerText="Nombre de la actividad" filterBy="#{actividad.nombre}" sortBy="#{actividad.descripcion}" filterMatchMode="startsWith">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{actividad.nombre}" /></f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{actividad.nombre}" style="width:100%">
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="Nombre sala - actividad" filterBy="#{actividad.nombresala}" sortBy="#{actividad.nombresala}" filterMatchMode="startsWith">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText  style="display:block; text-align:center"  value="#{actividad.nombresala}" /></f:facet>
+                                <f:facet name="input">
+                                    <h:selectOneMenu value="#{actividad.nombresala}" style="width:100%">
+                                        <f:selectItems value="#{actividadClientBean.salas}" var="var" itemLabel="#{var}" itemValue="#{var}" />
+                                    </h:selectOneMenu>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="Fecha" filterBy="#{actividad.dia}" sortBy="#{actividad.dia}" filterMatchMode="startsWith">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText  style="display:block; text-align:center"  value="#{actividad.dia}"></h:outputText >
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:calendar  value="#{actividad.dia}" id="time1" effect="fadeIn" pattern="dd-MM-yyyy">
+                                        <f:converter converterId="dateConverter" for="time1" />
+                                    </p:calendar>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="Hora comienzo" filterBy="#{actividad.horacomienzo}" sortBy="#{actividad.horacomienzo}" filterMatchMode="startsWith">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText  style="display:block; text-align:center"  value="#{actividad.horacomienzo}"></h:outputText >
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:calendar value="#{actividad.horacomienzo}" id="time2"  pattern="HH:mm" timeOnly="true">
+                                        <f:converter converterId="dateConverter" for="time2" />
+                                    </p:calendar>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="Hora fin" filterBy="#{actividad.horafin}" sortBy="#{actividad.horafin}" filterMatchMode="startsWith">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText  style="display:block; text-align:center"  value="#{actividad.horafin}"></h:outputText >
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:calendar value="#{actividad.horafin}" id="time3"  pattern="HH:mm" timeOnly="true">
+                                        <f:converter converterId="dateConverter" for="time3" />
+                                    </p:calendar>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="Descripción actividad" filterBy="#{actividad.descripcion}" sortBy="#{actividad.descripcion}" filterMatchMode="startsWith">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{actividad.descripcion}" /></f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{actividad.descripcion}" style="width:100%">
+                                        <f:validator validatorId="len255Validator" />
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Precio" filterBy="#{actividad.precio}" sortBy="#{actividad.precio}" filterMatchMode="startsWith">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText  style="display:block; text-align:center"  value="#{actividad.precio}" /></f:facet>
+                                <f:facet name="input">
+                                    <p:inputNumber value="#{actividad.precio}" style="width:100%">
+                                        <f:validateLongRange minimum="0"/>
+                                    </p:inputNumber>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Vacantes" filterBy="#{actividad.vacantes}" sortBy="#{actividad.vacantes}" filterMatchMode="startsWith">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText  style="display:block; text-align:center"  value="#{actividad.vacantes}" /></f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{actividad.vacantes}" style="width:100%">
+                                        <f:validateLongRange minimum="0"/>
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:inputText id="globalFilter" onkeyup="PF('actividadesTable').filter()" style="width:150px" placeholder="Buscar"/>
+                            <p:inputText id="email" value="#{actividadClientBean.nuevaActividad}" placeholder="Nueva Actividad">  
+                            </p:inputText>
+                        </f:facet>
+                    </p:dataTable>
+                    <p:outputPanel style="display:block; text-align:center">
+                        <p:commandButton id="l1" value="Borrar Actividad" action="#{actividadClientBean.deleteSelected}" update=":form:tableStateDT" immediate="true" />
+                        <p:commandButton id="l2" value="Nueva Actividad" action="#{actividadClientBean.addSelected}" update=":form:tableStateDT"/>
+                        <p:commandButton id="l3" value="Cerrar Ventas" action="#{actividadClientBean.addVentaDeActividad}" update=":form:tableStateDT" immediate="true" />
+                    </p:outputPanel>
+                    <p:blockUI block="form" trigger="l1,l2,l3">
+                        <p:graphicImage value="/images/load.gif"/>
+                    </p:blockUI>
+
+
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
