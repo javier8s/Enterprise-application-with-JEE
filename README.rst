@@ -1,7 +1,7 @@
 Enterprise Application
 ----------------------------------------------------
 
-.. image:: https://user-images.githubusercontent.com/2701938/34109703-4a8810aa-e3b9-11e7-8138-68eec47cfddb.gif
+.. image:: https://github.com/javier8s/Enterprise-application-with-JEE/demo.gif
     :alt: Demo GIF
 
 
@@ -27,6 +27,6 @@ Requirements
 Getting Started
 ===============
 
-You will need to load the database and complete all the requirements posted in the memo inside the project.
+You will need to load the database and complete all the server requirements posted in the memo inside the project.
 
 
