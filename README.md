@@ -2,8 +2,7 @@ Enterprise Application
 ----------------------------------------------------
 
 
-![](stats.gif)
-
+<img align="right" src="stats.gif" />
 
 Introduction
 ============
