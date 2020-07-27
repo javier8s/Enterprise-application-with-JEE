@@ -1,8 +1,9 @@
 Enterprise Application
 ----------------------------------------------------
 
-.. image:: https://github.com/javier8s/Enterprise-application-with-JEE/demo.gif
-    :alt: Demo GIF
+
+<img align="right" src="demo.gif" />
+
 
 
 Introduction
@@ -21,12 +22,15 @@ Requirements
 
 - PHP						
 
-- GlassFish Server 5.1.1						
+- GlassFish Server 5.1.1		
+
+- MySQL	8.0		
 
 
 Getting Started
 ===============
 
 You will need to load the database and complete all the server requirements posted in the memo inside the project.
+
 
 
