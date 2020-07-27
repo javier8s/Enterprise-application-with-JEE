@@ -10,8 +10,6 @@ Introduction
 You would see here an example of an Enterprise Application created with JEE.
 
 
-![](demo.gif)
-
 Requirements
 ============
 
