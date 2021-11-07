@@ -7,7 +7,7 @@ Enterprise Application
 Introduction
 ============
 
-You would see here an example of an Enterprise Application created with JEE.
+The project is an example of an Enterprise Application created with JEE for a Membership Club.
 
 
 Requirements
